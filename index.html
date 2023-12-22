@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="./src/style.css">
+    <!-- html2pdf CDN-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <button id="button">Generate PDF</button>
+        <div id="makepdf">
+            <div class="card-box p-relative">
+                <figure class="card-bg">
+                    <img src="./assets/1.jpg" alt="Background Image"/>
+                </figure>
+                <div class="left-part">
+                    <figure class="img-1">
+                        <!-- <img src="./assets/2.png" alt="Image"/> -->
+                        <div class="drop-zone">
+                            <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                            <input type="file" name="myFile" class="drop-zone__input">
+                        </div>
+                    </figure>
+                    <figure class="img-2 p-relative">
+                        <img src="./assets/shadow1.png" alt="Image"/>
+                        <textarea type="text" class="img-text">Kistler Patterson Funeral Home</textarea>
+                    </figure>
+                </div>
+                <div class="text-center right-part">
+                    <figure class="img-3 p-relative">
+                        <img src="./assets/shadow1.png" alt="Image"/>
+                        <input type="text" value="In Memory" class="img-text img-3-text" />
+                    </figure>
+                    <figure class="img-4 p-relative">
+                        <img src="./assets/3.png" alt="Image"/>
+                    </figure>
+                    <div class="mt-auto bg-opacity-50 bottom-sec">
+                        <input type="text" class="img-3-text p-relative" value='Eloise S. "Ellie" Kocher' />
+                        <input type="text" class="p-relative" value="October 8, 1946 ~ October 3, 2023" style="font-size: 12px;"/>
+                    </div>
+                </div>
+            </div>
+            <div class="card-box p-relative">
+                <figure class="card-bg">
+                    <img src="./assets/1.jpg" alt="Background Image"/>
+                </figure>
+                <div class="left-part">
+                    <figure class="img-1">
+                        <img src="./assets/2.png" alt="Image"/>
+                    </figure>
+                    <figure class="img-2 p-relative">
+                        <img src="./assets/shadow1.png" alt="Image"/>
+                        <textarea type="text" class="img-text">Kistler Patterson Funeral Home</textarea>
+                    </figure>
+                </div>
+                <div class="text-center right-part">
+                    <figure class="img-3 p-relative">
+                        <img src="./assets/shadow1.png" alt="Image"/>
+                        <input type="text" value="In Memory" class="img-text img-3-text" />
+                    </figure>
+                    <figure class="img-4 p-relative">
+                        <img src="./assets/3.png" alt="Image"/>
+                    </figure>
+                    <div class="mt-auto bg-opacity-50 bottom-sec">
+                        <input type="text" class="img-3-text p-relative" value='Eloise S. "Ellie" Kocher' />
+                        <input type="text" class="p-relative" value="October 8, 1946 ~ October 3, 2023" style="font-size: 12px;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script src="./src/main.js"></script>
+</html>
