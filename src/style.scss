@@ -163,3 +163,13 @@ input, textarea {
     color: white;
     padding: 10px;
 }
+
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    select {
+        padding: 8px 0;
+    }
+}
