@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML to PDF</title>
+  <style>
+    /*used when you want to hide default signature*/
+    /*end signature hide hack*/
+
+    #cform {
+        width:100%;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        font-size: 8pt;
+        line-height: normal; /* Needed because the table at the top was extending beyond the height of the section */
+        font-family: Helvetica, Arial, sans-serif;
+    }
+
+    #cform h1{font-size: 4.0em;}
+    #cform h2{font-size: 3.5em;}
+    #cform h3{font-size: 3.0em;}
+    #cform h4{font-size: 2.5em;}
+    #cform h5{font-size: 2.0em;}
+    #cform h6{font-size: 1.5em;}
+
+    #cform .f1{font-size: 0.2em;}
+    #cform .f2{font-size: 0.4em;}
+    #cform .f3{font-size: 0.6em;}
+    #cform .f4{font-size: 0.8em;}
+    #cform .f5{font-size: 1.0em;}
+    #cform .f6{font-size: 1.2em;}
+    #cform .f7{font-size: 1.4em;}
+    #cform .f8{font-size: 1.6em;}
+    #cform .f9{font-size: 1.8em;}
+    #cform .f10{font-size: 2.0em;}
+
+    #cform .bold{font-weight: bold;}
+
+    #cform p{margin:0em;}
+    #cform #cform-head{
+        text-align: center;
+        width:100%;
+    }
+
+    #cform #cform-content-container{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0em;
+        margin: 0.4167em auto 0em auto;
+    }
+
+    #cform .cform-page{
+        page-break-inside: avoid;
+        box-sizing: border-box;
+        padding: 0px;
+        margin: 2px auto 5px auto;
+        width: 100%;
+    }
+
+    #cform .sectionTitle{
+        text-align: center;
+        font-weight: bold;
+        padding: 3px auto 3px auto;
+        border-top: 1px solid black;
+        border-bottom: 1px solid black;
+        font-size: 1em;
+    }
+
+    #cform .cform-group{
+        margin: 0em;
+        box-sizing: border-box;
+        float: left;
+        padding: 2px 5px;
+    }
+
+    #cform .cform-section{
+        box-sizing: border-box;
+        margin: 0em;
+        padding: 0em 0em;
+    }
+    #cform .cform-section:after {
+        content: " ";
+        visibility: hidden;
+        display: block;
+        height: 0em;
+        clear: both;
+    }
+
+    #cform .w5{width:5% !important;}
+    #cform .w7{width:7% !important;}
+    #cform .w10{width:10% !important;}
+    #cform .w13{width:13% !important;}
+    #cform .w14{width:14% !important;}
+    #cform .w15{width:15% !important;}
+    #cform .w16{width:16.6667% !important;}
+    #cform .w19{width:19% !important;}
+    #cform .w20{width:20% !important;}
+    #cform .w25{width:25% !important;}
+    #cform .w30{width:30% !important;}
+    #cform .w33{width:33.3333% !important;}
+    #cform .w35{width:35% !important;}
+    #cform .w40{width:40% !important;}
+    #cform .w45{width:45% !important;}
+    #cform .w50{width:50% !important;}
+    #cform .w55{width:55% !important;}
+    #cform .w60{width:60% !important;}
+    #cform .w65{width:65% !important;}
+    #cform .w66{width:66.6667% !important;}
+    #cform .w67{width:66.6667% !important;}
+    #cform .w70{width:70% !important;}
+    #cform .w75{width:75% !important;}
+    #cform .w80{width:80% !important;}
+    #cform .w83{width:83.3333% !important;}
+    #cform .w85{width:85% !important;}
+    #cform .w90{width:90% !important;}
+    #cform .w95{width:95% !important;}
+    #cform .w100{width:100% !important;}
+
+    #cform input{
+        font-size: 0.9167em;
+    }
+    #cform table.inputContainerTable{
+        width:100%;
+        padding: 0em;
+        margin: 0em;
+        float: left;
+        box-sizing: border-box;
+        overflow: hidden;
+        white-space: nowrap;
+        clear:both;
+        min-height: 1.75em;
+        font-size: 1em;
+        -webkit-border-horizontal-spacing: 0px; /* set to 2px if want break between side-by-side inputs*/
+        -webkit-border-vertical-spacing: 0px;
+    }
+
+    #cform table.inputContainerTable.spacedTable{
+        -webkit-border-horizontal-spacing: 2px !important;
+    }
+
+
+    #cform input[type=checkbox]{
+        display: inline-block;
+        height: 1.4167em;
+        vertical-align: bottom;
+        margin: 0em;
+    }
+
+    .headerTable table {
+        border-collapse: collapse !important;
+    }
+
+
+    #cform .inputContainerTable td,
+    #cform .inputContainerTable tr{
+        padding: 0em;
+        margin: 0em;
+    }
+
+    #cform .inputContainerTable .inputUline{
+        width: 100%;
+        min-height:1.4167em;
+        height: 1.4167em;
+        max-height: 1.4167em;
+        box-sizing: border-box;
+        padding-left: 0.5em;
+    }
+    #cform .inputContainerTable input.inputUline{
+        border: 0.0833em solid gray;
+        padding-top: 0em;
+        padding-bottom: 0em;
+        background-color: rgb(244, 244, 244);
+        vertical-align: bottom;
+    }
+
+    #cform .inputContainerTable td.inputContain{
+        border-bottom: 0.0833em solid black;
+        width:100%;
+        font-size:1em;
+        min-height: 1.5em;
+        height: 1.5em;
+        max-height: 1.5em;
+        box-sizing: border-box;
+        padding-left: 2px;
+        padding-right: 2px;
+        vertical-align: bottom;
+        padding-bottom: 1px;
+    }
+    #cform .inputContainerTable td.inputContainLabel{
+        font-size: 1em;
+        vertical-align: bottom;
+        font-weight: bold;
+    }
+    #cform .inputContainerTable td.inputBelow{
+        width:100%;
+        text-align: center;
+        font-size:0.8em;
+        vertical-align:top;
+    }
+    #cform .inputContainerTable tr.lowerRow{
+        line-height:0.9em;
+        min-height:0.9em;
+        height: 1em;
+        max-height: 0.9em;
+    }
+    #cform .inputContainerTable tr.upperRow{
+        line-height:1.4167em;
+        min-height:1.4167em;
+        height: 1.4167em;
+        max-height: 1.4167em;
+    }
+
+    #cform .pageFooter{
+        page-break-after: always;
+    }
+    #cform .center{text-align: center !important;}
+    #cform .left{text-align: left !important;}
+    #cform .right{text-align: right !important;}
+    #cform .justify{text-align: justify !important;}
+    #cform .no-bold{font-weight: normal !important;}
+    #cform .underline{text-decoration: underline !important;}
+    #cform .no-border{border: none !important;}
+    #cform .inline-block{display: inline-block;}
+    #cform .vTop{vertical-align: top !important;}
+    #cform .vSpace{min-height: 1px !important;}
+
+    #cform hr{
+        border: 1.5px solid black;
+        border-bottom: none;
+    }
+    #cform .clr{height:0;display: block; clear: both;}
+    .m0{margin:0;}
+
+    .p0{padding:0px;}
+    .p1{padding:1px;}
+    .p2{padding:2px;}
+    .p3{padding:3px;}
+    .p4{padding:4px;}
+    .p5{padding:5px;}
+    .p6{padding:6px;}
+    .p7{padding:7px;}
+    .p8{padding:8px;}
+    .p9{padding:9px;}
+    .p10{padding:10px;}
+    .p11{padding:11px;}
+    .p12{padding:12px;}
+    .p13{padding:13px;}
+    .p14{padding:14px;}
+    .p15{padding:15px;}
+    .p16{padding:16px;}
+    .p17{padding:17px;}
+    .p18{padding:18px;}
+    .p19{padding:19px;}
+    .p20{padding:20px;}
+
+    .pt0{padding-top:0px;}
+    .pt1{padding-top:1px;}
+    .pt2{padding-top:2px;}
+    .pt3{padding-top:3px;}
+    .pt4{padding-top:4px;}
+    .pt5{padding-top:5px;}
+    .pt6{padding-top:6px;}
+    .pt7{padding-top:7px;}
+    .pt8{padding-top:8px;}
+    .pt9{padding-top:9px;}
+    .pt10{padding-top:10px;}
+    .pt11{padding-top:11px;}
+    .pt12{padding-top:12px;}
+    .pt13{padding-top:13px;}
+    .pt14{padding-top:14px;}
+    .pt15{padding-top:15px;}
+    .pt16{padding-top:16px;}
+    .pt17{padding-top:17px;}
+    .pt18{padding-top:18px;}
+    .pt19{padding-top:19px;}
+    .pt20{padding-top:20px;}
+
+    .pb0{padding-bottom:0px;}
+    .pb1{padding-bottom:1px;}
+    .pb2{padding-bottom:2px;}
+    .pb3{padding-bottom:3px;}
+    .pb4{padding-bottom:4px;}
+    .pb5{padding-bottom:5px;}
+    .pb6{padding-bottom:6px;}
+    .pb7{padding-bottom:7px;}
+    .pb8{padding-bottom:8px;}
+    .pb9{padding-bottom:9px;}
+    .pb10{padding-bottom:10px;}
+    .pb11{padding-bottom:11px;}
+    .pb12{padding-bottom:12px;}
+    .pb13{padding-bottom:13px;}
+    .pb14{padding-bottom:14px;}
+    .pb15{padding-bottom:15px;}
+    .pb16{padding-bottom:16px;}
+    .pb17{padding-bottom:17px;}
+    .pb18{padding-bottom:18px;}
+    .pb19{padding-bottom:19px;}
+    .pb20{padding-bottom:20px;}
+
+    .pl0{padding-left:0px;}
+    .pl1{padding-left:1px;}
+    .pl2{padding-left:2px;}
+    .pl3{padding-left:3px;}
+    .pl4{padding-left:4px;}
+    .pl5{padding-left:5px;}
+    .pl6{padding-left:6px;}
+    .pl7{padding-left:7px;}
+    .pl8{padding-left:8px;}
+    .pl9{padding-left:9px;}
+    .pl10{padding-left:10px;}
+    .pl11{padding-left:11px;}
+    .pl12{padding-left:12px;}
+    .pl13{padding-left:13px;}
+    .pl14{padding-left:14px;}
+    .pl15{padding-left:15px;}
+    .pl16{padding-left:16px;}
+    .pl17{padding-left:17px;}
+    .pl18{padding-left:18px;}
+    .pl19{padding-left:19px;}
+    .pl20{padding-left:20px;}
+
+    .pr0{padding-right:0px;}
+    .pr1{padding-right:1px;}
+    .pr2{padding-right:2px;}
+    .pr3{padding-right:3px;}
+    .pr4{padding-right:4px;}
+    .pr5{padding-right:5px;}
+    .pr6{padding-right:6px;}
+    .pr7{padding-right:7px;}
+    .pr8{padding-right:8px;}
+    .pr9{padding-right:9px;}
+    .pr10{padding-right:10px;}
+    .pr11{padding-right:11px;}
+    .pr12{padding-right:12px;}
+    .pr13{padding-right:13px;}
+    .pr14{padding-right:14px;}
+    .pr15{padding-right:15px;}
+    .pr16{padding-right:16px;}
+    .pr17{padding-right:17px;}
+    .pr18{padding-right:18px;}
+    .pr19{padding-right:19px;}
+    .pr20{padding-right:20px;}
+
+    .offset-block{min-height: 1px;}
+
+    .mobile-br {
+        display: none;
+    }
+
+    @media all and (min-width: 769px){
+        .ba{border:1px solid black;}
+        .bh{border-left: 1px solid black;border-right: 1px solid black;}
+        .bv{border-top: 1px solid black;border-bottom: 1px solid black;}
+        .bt{border-top:1px solid black;}
+        .br{border-right:1px solid black;}
+        .bb{border-bottom:1px solid black;}
+        .bl{border-left:1px solid black;}
+
+        .tba{border:3px solid black;}
+        .tbh{border-left: 3px solid black;border-right: 3px solid black;}
+        .tbv{border-top: 3px solid black;border-bottom: 3px solid black;}
+        .tbt{border-top:3px solid black;}
+        .tbr{border-right:3px solid black;}
+        .tbb{border-bottom:3px solid black;}
+        .tbl{border-left:3px solid black;}
+
+        #cform .hidePad {padding: 80px 0 0;}
+
+        #cform .padLeft {padding-left: 30px;}
+
+    }
+
+
+    @media print{
+        .ba{border:1px solid black;}
+        .bh{border-left: 1px solid black;border-right: 1px solid black;}
+        .bv{border-top: 1px solid black;border-bottom: 1px solid black;}
+        .bt{border-top:1px solid black;}
+        .br{border-right:1px solid black;}
+        .bb{border-bottom:1px solid black;}
+        .bl{border-left:1px solid black;}
+
+        .tba{border:3px solid black;}
+        .tbh{border-left: 3px solid black;border-right: 3px solid black;}
+        .tbv{border-top: 3px solid black;border-bottom: 3px solid black;}
+        .tbt{border-top:3px solid black;}
+        .tbr{border-right:3px solid black;}
+        .tbb{border-bottom:3px solid black;}
+        .tbl{border-left:3px solid black;}
+
+        #cform .hidePad {padding: 80px 0 0;}
+
+        #cform .padLeft {padding-left: 30px;}
+
+    }
+
+    @media only screen and (max-width: 768px){
+
+        .mobile-clr{
+            display: block;
+            min-height: 1px;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            clear: both;
+            font-size: 10pt;
+        }
+
+        #cform .hidePad {padding: 0;}
+
+        #cform .padLeft {padding-left: 0;}
+
+
+        #cform .inputContainerTable td.inputContainLabel,
+        #cform .inputContainerTable td.inputBelow{
+            white-space: nowrap;
+        }
+
+        #cform .m0{width:0% !important;}
+        #cform .m5{width:5% !important;}
+        #cform .m7{width:7% !important;}
+        #cform .m10{width:10% !important;}
+        #cform .m14{width:14% !important;}
+        #cform .m15{width:15% !important;}
+        #cform .m16{width:16.6667% !important;}
+        #cform .m19{width:19% !important;}
+        #cform .m20{width:20% !important;}
+        #cform .m25{width:25% !important;}
+        #cform .m30{width:30% !important;}
+        #cform .m33{width:33.3333% !important;}
+        #cform .m35{width:35% !important;}
+        #cform .m40{width:40% !important;}
+        #cform .m45{width:45% !important;}
+        #cform .m50{width:50% !important;}
+        #cform .m55{width:55% !important;}
+        #cform .m60{width:60% !important;}
+        #cform .m65{width:65% !important;}
+        #cform .m66{width:66.6667% !important;}
+        #cform .m67{width:66.6667% !important;}
+        #cform .m70{width:70% !important;}
+        #cform .m75{width:75% !important;}
+        #cform .m80{width:80% !important;}
+        #cform .m83{width:83.3333% !important;}
+        #cform .m85{width:85% !important;}
+        #cform .m90{width:90% !important;}
+        #cform .m95{width:95% !important;}
+        #cform .m100{width:100% !important;}
+
+        .mba{border:1px solid black;}
+        .mbh{border-left: 1px solid black;border-right: 1px solid black;}
+        .mbv{border-top: 1px solid black;border-bottom: 1px solid black;}
+        .mbt{border-top:1px solid black;}
+        .mbr{border-right:1px solid black;}
+        .mbb{border-bottom:1px solid black;}
+        .mbl{border-left:1px solid black;}
+
+        .mobile-br {
+            display: block;
+        }
+    }
+
+
+</style>
+</head>
+
+<body>
+    <div id="cform">
+        <div class="cform-page" style="padding-top: 20px;">
+    
+            <div class="cform-section tba mba">
+                <div class="cform-group w50 m100 bold f7">Wood Destroying Insect Inspection Report</div>
+                <div class="cform-group w50 m100 f4" style="padding-top: 10px;">
+                    <b>Notice:</b> Please read important consumer information on <b>page 2.</b></div>
+            </div>
+    
+            <!-- SECTION I -->
+            <div class="cform-section tbr tbb tbl mbr mbb mbl" style="">
+                <div class="cform-group w50 m100 br bb mbb" style="min-height: 100px; line-height: 1.4;">
+                    <b class="f6">Section I. General Information</b>
+                    <span style="font-size: .7em;">Inspection Company, Address &amp; Phone</span>
+                    <div style="clear: both; height: 5px;"></div>
+                    <input class="w100 bold" value="{{officeName}}"><br>
+                    <input class="w100 bold" value="{{officeAddress}}"><br>
+                    <input class="w100 bold" value="{{officeCity}}, {{officeState}} {{officeZip}}"><br>
+                    <input class="w100 bold" value="{{officePhone}}">
+                </div>
+                <div class="cform-group w50 m100" style="padding: 0;">
+                    <div class="cform-group w50 m100 br bb mbb" style="min-height: 40px; line-height: 1.4;">
+                        <span class="f4">Company's Pest Control Business Lic. No.</span><br>
+                        <input class="w100 bold" value="{{licenseNumber}}">
+                    </div>
+                    <div class="cform-group w50 m100 mbb bb" style="min-height: 40px; line-height: 1.4;">
+                        <span class="f4">Date of Inspection</span><br>
+                        <input class="w100 bold" value="{{date}}">
+                    </div>
+                </div>
+                <div class="cform-group w50 m100 bb mbb" style="min-height: 60px; line-height: 1.4;">
+                    <span class="f4">Address of Property Inspected</span><br>
+                    <input class="w100 bold" value="{{customerAddress}}"><br>
+                    <input class="w100 bold" value="{{customerCity}}, {{customerState}} {{customerZip}}">
+                </div>
+                <div style="clear: both;"></div>
+                <div class="cform-group w70 m100 br" style="min-height: 50px; line-height: 1.4;">
+                    <span class="f4">Inspector's Name, Signature &amp; Certification, Registration, or Lic. #</span>
+                    <div style="clear: both;"></div>
+                    <div class="cform-group w33 m100"><input class="w100 bold" value=""></div>
+                    <div class="cform-group w33 m100">
+                        <div prtype="signaturepicker" for="employee" style="width:60px; border: none; height:30px;"></div>
+                    </div>
+                    <div class="cform-group w33 m100"><input class="w100 bold" value=""></div>
+                </div>
+                <div class="cform-group w30 m100" style="min-height: 50px; line-height: 1.4;">
+                    <span class="f4">Structure(s) Inspected</span><br>
+                    <textarea class="w100 bold" rows="1"></textarea>
+                </div>
+            </div>
+    
+            <!-- SECTION II -->
+            <div class="cform-section tbr tbb tbl mbr mbb mbl">
+                <div class="cform-group w100 m100">
+                    <b class="f6">Section II. Inspection Findings</b>
+                    <span style="font-size: .9em; padding-left: 10px;">
+                        This report is indicative of the condition of the above identified structure(s) on the date of
+                        inspection ad is not to be construed as a guarantee or warranty against latent, concealed, or
+                        future infestations or wood destroying insect damage. <b>Based on a careful visual inspection of
+                        the readily accessible areas of the structure(s) inspected:</b>
+                    </span>
+                </div>
+                <div class="cform-group w100 m100" style="font-size: .9em; padding-top: 10px;">
+                    <input type="checkbox" style="display: inline; font-size: 1.1em;"><span style="padding-left: 5px;">A.</span>
+                    <b>No Visible</b> evidence of wood destroying insects was observed.
+                </div>
+                <div class="cform-group w100 m100" style="font-size: .9em;">
+                    <input type="checkbox" style="display: inline; font-size: 1.1em;"><span style="padding-left: 5px;">B.</span>
+                    <b>Visible</b> evidence of wood destroying insects was observed.
+                </div>
+                <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 30px; min-height: 40px;">
+                    <input type="checkbox" style="display: inline; font-size: 1.1em;"><span style="padding-left: 5px;">1.</span>
+                    Live insects (description &amp; location):
+                    <textarea class="w95 bold" rows="2"></textarea>
+                </div>
+                <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 30px; min-height: 50px;">
+                    <input type="checkbox" style="display: inline; font-size: 1.1em;"><span style="padding-left: 5px;">2.</span>
+                    Dead insects, insect parts, frass, shelter tubes, exit holes, or staining (description and location):
+                    <textarea class="w95 bold" rows="3"></textarea>
+                </div>
+                <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 30px; min-height: 50px;">
+                    <input type="checkbox" style="display: inline; font-size: 1.1em;"><span style="padding-left: 5px;">3.</span>
+                    <b>Visible</b> damage from wood destroying insects was noted as follows (description and location):
+                    <textarea class="w95 bold" rows="3"></textarea>
+                </div>
+                <div class="cform-group w100 m100" style="font-size: .9em; line-height: 1.5;">
+                    <b><i><u>NOTE: This is not a structural damage report.</u></i> If box B above is checked, it should be
+                        understood that some degree of damage, including hidden damage, may be present.</b> If any questions
+                    arise regarding damage indicated by this report, it is recommended that the buyer or any interested
+                    parties contact a qualified structural professional to determine the extent of damage and the need for
+                    repairs.
+                </div>
+            </div>
+    
+            <!-- SECTION III -->
+            <div class="cform-section tbr tbb tbl mbr mbb mbl">
+                <div class="cform-group w100 m100">
+                    <b class="f6">Section III. Recommendations</b>
+                </div>
+                <div class="cform-group w100 m100" style="font-size: .9em; min-height: 40px;">
+                    <input type="checkbox" style="display: inline; font-size: 1.1em;">
+                    No action and/or treatment recommended: (Explain if Box B in Section II is checked):
+                    <textarea class="w100 bold" rows="2"></textarea>
+                </div>
+                <div class="cform-group w100 m100" style="font-size: .9em; min-height: 40px;">
+                    <input type="checkbox" style="display: inline; font-size: 1.1em;">
+                    Recommended action(s) and/or treatment(s) for the control of:
+                    <textarea class="w100 bold" rows="2"></textarea>
+                </div>
+            </div>
+    
+            <!-- SECTION IV -->
+            <div class="cform-section tbr tbb tbl mbr mbb mbl">
+                <div class="cform-group w70 m100 br mbb">
+                    <b class="f6">Section IV. Obstructions and Inaccessible Areas</b><br>
+                    <span style="font-size: .9em;">
+                        The following areas of the structure(s) inspected were obstructed or inaccessible:
+                    </span>
+                    <div style="clear: both;"></div>
+                    <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody><tr class="upperRow">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold">Basement</td>
+                                <td class="inputContain bold"><input class="inputUline"></td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody><tr class="upperRow">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold">Crawlspace</td>
+                                <td class="inputContain bold"><input class="inputUline"></td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody><tr class="upperRow">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold">Main Level</td>
+                                <td class="inputContain bold"><input class="inputUline"></td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody><tr class="upperRow">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold">Attic</td>
+                                <td class="inputContain bold"><input class="inputUline"></td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody><tr class="upperRow">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold">Garage</td>
+                                <td class="inputContain bold"><input class="inputUline"></td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody><tr class="upperRow">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold">Exterior</td>
+                                <td class="inputContain bold"><input class="inputUline"></td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody><tr class="upperRow">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold">Porch</td>
+                                <td class="inputContain bold"><input class="inputUline"></td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody><tr class="upperRow">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold">Addition</td>
+                                <td class="inputContain bold"><input class="inputUline"></td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody><tr class="upperRow">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold">Other</td>
+                                <td class="inputContain bold"><input class="inputUline"></td>
+                            </tr>
+                        </tbody></table>
+                    </div>
+                </div>
+                <div class="cform-group w30 m100" style="padding: 0; font-size: .9em;">
+                    <div class="cform-group w100 m100 bold">The inspector may write out obstructions or use the following
+                        optional key:
+                    </div>
+                    <div class="cform-group w50 m100" style="font-size: .8em; line-height: 1.4;">
+                        1. Fixed ceiling<br>
+                        2. Suspended ceiling<br>
+                        3. Fixed wall covering<br>
+                        4. Floor covering<br>
+                        5. Insulation<br>
+                        6. Cabinets or shelving<br>
+                        7. Stored items<br>
+                        8. Furnishings<br>
+                        9. Appliances<br>
+                        10. No access or entry<br>
+                        11. Limited access<br>
+                        12. No access beneath<br>
+                        13. Only visual access<br>
+                        14. Cluttered condition
+                    </div>
+                    <div class="cform-group w50 m100" style="font-size: .8em; line-height: 1.4;">
+                        15. Standing water<br>
+                        16. Dense vegetation<br>
+                        17. Exterior siding<br>
+                        18. Window well covers<br>
+                        19. Wood pile<br>
+                        20. Snow<br>
+                        21. Unsafe conditions<br>
+                        22. Rigid foam board<br>
+                        23. Synthetic stucco<br>
+                        24. Duct work, wiring, and/or plumbing<br>
+                        25. Spray foam insulation<br>
+                        26. Equipment
+                    </div>
+                </div>
+            </div>
+    
+            <!-- SECTION V -->
+            <div class="cform-section tbr tbb tbl mbr mbb mbl">
+                <div class="cform-group w100 m100" style="min-height: 90px;">
+                    <b class="f6">Section V. Additional Comments and Attachments</b>
+                    <span style="font-size: .9em;">(these are an integral part of the report)</span>
+                    <textarea class="w100 bold" rows="5"></textarea>
+                </div>
+                <div class="cform-group w100 m100">
+                    <table class="inputContainerTable">
+                        <tbody><tr class="upperRow">
+                            <td class="inputContainLabel no-bold">Attachments</td>
+                            <td class="inputContain bold"><input class="inputUline"></td>
+                        </tr>
+                    </tbody></table>
+                </div>
+            </div>
+    
+            <!-- Signature of Seller and Buyer -->
+            <div class="cform-section tbr tbb tbl mbr mbb mbl">
+                <div class="cform-group w50 m100 br mbb">
+                    <b class="f6">Signature of Seller(s)</b>
+                    <span style="font-size: .9em; line-height: 1.3;">
+                        or Owner(s) if refinancing. Seller discloses to the buyer all information, to their knowledge,
+                        regarding W.D.I. infestation, damage, repair, and treatment history.
+                    </span>
+                    <div style="clear: both;"></div>
+                    <table class="inputContainerTable" style="padding-top:23px;"><tbody><tr class="upperRow"><td class="inputContainLabel no-bold">X</td>
+                        <td class="">
+                            <div prtype="signaturepicker" for="customer" style="width:100px; border: none; height:60px;"></div>
+                        </td>
+                    </tr></tbody></table>
+                </div>
+                <div class="cform-group w50 m100 br mbb">
+                    <b class="f6">Signature of Buyer.</b>
+                    <span style="font-size: .9em; line-height: 1.3;">
+                        The undersigned hereby acknowledges receipt of a copy of both page 1 and page 2 of this report and
+                        understands the information reported.
+                    </span>
+                    <div style="clear: both;"></div>
+                    <table class="inputContainerTable" style="padding-top:23px;"><tbody><tr class="upperRow"><td class="inputContainLabel no-bold">X</td>
+                        <td class="">
+                            <div prtype="signaturepicker" for="customer" style="width:100px; border: none; height:60px;"></div>
+                        </td>
+                    </tr></tbody></table>
+                </div>
+            </div>
+    
+            <div class="cform-section">
+                <div class="cform-group w85 m100" style="font-size: .6em;">
+                    <b style="font-size: 1.4em;">Form NPMA-33</b> (7/01/19)
+                    <img src="https://d1miv8abus7gau.cloudfront.net/insects/aptivepest/insect_161_9_20190809113258.png" style="height: 6px; cursor: pointer;"> 2019 National Pest Management Association. All Rights Reserved. No
+                    reproduction of this form is permitted without the express permission of NPMA.<br>
+                    Previous editions are obsolete after 12/31/19. This form is approved for FHA and VA loans.
+                </div>
+                <div class="cform-group w15 m100 bold right" style="padding-top: 10px;">Page 1 of 2</div>
+            </div>
+    
+        </div>
+    
+    
+        <!-- PAGE 2 -->
+        <div class="cform-page hidePad">
+    
+            <div class="cform-section">
+                <div class="cform-group w100 m100 f8">
+                    Important Consumer Information Regarding<br>the Scope and Limitations of the Inspection
+                </div>
+                <div class="cform-group w100 m100 f6 justify" style="padding-top: 10px;">
+                    Please read this entire page as it is part of this report. Please refer to the NPMA Suggested Guidelines
+                    for instructions on completing this report. This report is not a guarantee or warranty as to the absence
+                    of wood destroying insects nor is it a structural integrity report. The inspector's training and
+                    experience do not qualify the inspector in damage evaluation or any other building construction
+                    technology and/or repair.
+                    <ol style="list-style: decimal outside; padding-left: 15px; font-size: .9em;">
+                        <li style="padding-left: 15px;">
+                            <b>About the Inspection:</b> A visual inspection was conducted in the readily accessible areas
+                            of the structure(s) indicated (see Page 1) including attics and crawlspaces which permitted
+                            entry during the inspection. The inspection included probing and/or sounding of unobstructed and
+                            accessible areas to determine the presence or absence of visual evidence of wood destroying
+                            insects. The WDI inspection firm is not responsible to repair any damage or treat any
+                            infestation at the structure(s) inspected, except as may be provided by separate contract. Also,
+                            wood destroying insect infestation and/or damage may exist in concealed or inaccessible areas.
+                            The inspection firm cannot guarantee that any wood destroying insect infestation and/or damage
+                            disclosed by this inspection represents all of the wood destroying insect infestation and/or
+                            damage which may exist as of the date of the inspection. <b><i><u>For purposes of this
+                            inspection, wood destroying insects include: termites, carpenter ants, carpenter bees, and
+                            reinfesting wood boring beetles. This inspection does not include mold, mildew or noninsect wood
+                            destroying organisms.</u></i> This report shall be considered invalid for purposes of securing a
+                            mortgage and/or settlement of property transfer if not used within ninety (90) days from the
+                            date of inspection. <u>This shall not be construed as a 90-day warranty.</u> There is no
+                            warranty, express or implied, related to this report unless disclosed as required by state
+                            regulations or a written warranty or service agreement is attached.</b>
+                        </li>
+                        <br>
+                        <li style="padding-left: 15px;">
+                            <b>Treatment Recommendation Guidelines Regarding Subterranean Termites:</b> Treatment or
+                            corrective action should be recommended if live termites are found. If no evidence of a previous
+                            treatment is documented and evidence of infestation is found, even if no live termites are
+                            observed, treatment or corrective action by a licensed pest control company should be
+                            recommended. Treatment or corrective action may be recommended if evidence of infestation is
+                            observed, and a documented treatment occurred previously, unless the structure is under warranty
+                            or covered by a service agreement with a licensed pest control company.<br> <b>For other Wood
+                            Destroying Insects, please refer to the NPMA suggested guidelines for added guidance on actions
+                            and or treatment.</b>
+                        </li>
+                        <br>
+                        <li style="padding-left: 15px;">
+                            <b>Obstructions and Inaccessible Areas:</b> No inspection was made in areas which required the
+                            breaking apart or into, dismantling, removal of any object, including but not limited to:
+                            moldings, floor coverings, wall coverings, siding, fixed ceilings, insulation, furniture,
+                            appliances, and/or personal possessions; nor were areas inspected which were obstructed or
+                            inaccessible for physical access on the date of inspection. Your inspector may write out
+                            inaccessible areas or use the key in Section IV. Crawl spaces, attics, and/or other areas may be
+                            deemed inaccessible if the opening to the area is not large enough to provide physical access
+                            for the inspector or if a ladder was required for access. Crawl spaces (or portions thereof) may
+                            also be deemed inaccessible if there is less than 24 inches of clearance from the bottom of the
+                            floor joists to the surface below. If any area which has been reported as inaccessible is made
+                            accessible, the inspection company may be contacted for another inspection. An additional fee
+                            may apply.
+                        </li>
+                        <br>
+                        <li style="padding-left: 15px;">
+                            <b>Consumer Maintenance Advisory Regarding Integrated Pest Management for Prevention of Wood
+                                Destroying Insects.</b> Any structure can be attacked by wood destroying insects. Homeowners
+                            should be aware of and try to eliminate conditions which promote insect infestation in and
+                            around their structure(s). Factors which may lead to wood destroying insect infestation include:
+                            earth to wood contact, foam insulation at foundation in contact with soil, faulty grade,
+                            improper drainage, firewood against structure(s), insufficient ventilation, moisture, wood
+                            debris in crawlspace, wood mulch or ground cover in contact with the structure, tree branches
+                            touching structure(s), landscape timbers and wood decay. Should these or other conditions exist,
+                            corrective measures should be taken in order to reduce the chances of infestation of wood
+                            destroying insects and the need for treatment.
+                        </li>
+                        <br>
+                        <li style="padding-left: 15px;">
+                            <b>Neither the inspecting company nor the inspector has had, presently has, or contemplates
+                                having any interest in the property inspected.</b>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+    
+            <div class="cform-section" style="padding-top: 100px;">
+                <div class="cform-group w85 m100" style="font-size: .6em;">
+                    <b style="font-size: 1.4em;">Form NPMA-33</b> (7/01/19)
+                    <img src="https://d1miv8abus7gau.cloudfront.net/insects/aptivepest/insect_161_9_20190809113258.png" style="height: 6px; cursor: pointer;"> 2019 National Pest Management Association. All Rights Reserved. No
+                    reproduction of this form is permitted without the express permission of NPMA.<br>
+                    Previous editions are obsolete after 12/31/19. This form is approved for FHA and VA loans.
+                </div>
+                <div class="cform-group w15 m100 bold right" style="padding-top: 10px;">Page 2 of 2</div>
+            </div>
+    
+        </div>
+    </div>
+</body>
+</html>

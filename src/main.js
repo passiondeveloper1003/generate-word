@@ -71,20 +71,52 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
   }
 
 
-let button = document.getElementById("button");
-let makepdf = document.getElementById("makepdf");
+// let button = document.getElementById("button");
+// let makepdf = document.getElementById("makepdf");
 
-button.addEventListener("click", function () {
-    let mywindow = window.open("", "PRINT", 
-            "height=400,width=600");
+// button.addEventListener("click", function () {
+//     let mywindow = window.open("", "PRINT", 
+//             "height=400,width=600");
 
-    mywindow.document.write(makepdf.innerHTML);
+//     mywindow.document.write(makepdf.innerHTML);
 
-    mywindow.document.close();
-    mywindow.focus();
+//     mywindow.document.close();
+//     mywindow.focus();
 
-    mywindow.print();
-    mywindow.close();
+//     mywindow.print();
+//     mywindow.close();
 
-    return true;
+//     return true;
+// });
+
+var specialElementHandlers = {
+  '#editor': function (element,renderer) {
+      return true;
+  }
+};
+
+var downlodButton = document.getElementById('downloadPdf');
+downlodButton.addEventListener('click', function() {
+  // window.jsPDF = window.jspdf.jsPDF;
+		// var pdf = new jsPDF('p', 'pt', 'letter');
+		// pdf.html(document.getElementById('makepdf'), {
+		// 	callback: function (pdf) {
+    //     pdf.save('sample-file.pdf');
+		// 		// var iframe = document.createElement('iframe');
+		// 		// iframe.setAttribute('style', 'position:absolute;right:0; top:0; bottom:0; height:100%; width:500px');
+		// 		// document.body.appendChild(iframe);
+		// 		// iframe.src = pdf.output('datauristring');
+		// 	}
+		// });
+var pdf = new jsPDF();
+console.log(pdf);
+var element = document.getElementById('makepdf');
+
+pdf.addHTML( element, function(){ pdf.save('sample-file.pdf'); }
+);
+
+// pdf.fromHTML(element);
+// pdf.save('sample-file.pdf');
+// console.log(element);
+// html2pdf().from(element).save('filename.pdf');
 });

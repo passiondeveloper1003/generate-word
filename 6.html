@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML to PDF</title>
+  <style>
+    #cform-factors label {
+      max-width: 180px;
+      line-height: 1;
+      margin-top: 7px;
+    }
+    #cform-wrap {
+      width: 93.75%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1em 0px;
+      font-family: arial;
+    }
+    #cform-wrap .cform-header {
+      text-align: center;
+    }
+  
+    .cform-service-wrap {
+      padding: 10px;
+      margin-top: 10px;
+    }
+  
+    .cform-section-header {
+      text-transform: uppercase;
+      font-weight: bold;
+      margin: 0;
+      text-decoration: underline;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+  
+    .cform-section input, .cform-section textarea {
+      padding: 4px;
+      width: -webkit-fill-available;
+    }
+  
+    .cform-section textarea {
+      min-height: 60px;
+    }
+  
+    .cform-section label, .cform-section span.cform-autofill {
+      padding-right: 6px;
+      float: left;
+      line-height: 27px;
+      text-align: left;
+    }
+  
+    .cform-col input {
+      width: 100%;
+    }
+  
+    .cform-checkbox {
+      width: 25px;
+      margin-top: 4px;
+      margin-right: 10px;
+      float: left;
+    }
+  
+    .cform-col span {
+      display: block;
+      overflow: hidden;
+    }
+  
+    .cform-col label {
+      font-weight: bold;
+      font-size: 14px;
+      margin-left: 28px;
+      line-height: 1;
+      margin-top: 3px;
+      padding: 4px 5px 4px 0;
+    }
+  
+    .cform-section p input, .cform-section label input {
+      max-width: 100px;
+    }
+  
+    /*  SECTIONS  ============================================================================= */
+  
+    .cform-section {
+      clear: both;
+      padding: 0px;
+      margin: 0px;
+    }
+  
+    /*  GROUPING  ============================================================================= */
+  
+    .cform-group:before, .cform-group:after {
+      content: "";
+      display: table;
+    }
+    .cform-group:after {
+      clear: both;
+    }
+    .cform-group {
+      zoom: 1; /* For IE 6/7 (trigger hasLayout) */
+      page-break-inside: avoid;
+    }
+  
+    /*  GRID COLUMN SETUP   ==================================================================== */
+  
+    .cform-col {
+      display: block;
+      float: left;
+      margin: 1% 0 1% 1.6%;
+    }
+  
+    .cform-col:first-child {
+      margin-left: 0;
+    }/* all browsers except IE6 and lower */
+  
+    /*  REMOVE MARGINS AS ALL GO FULL WIDTH AT 480 PIXELS */
+  
+    @media only screen and (max-width: 480px) {
+      .cform-col {
+        margin: 1% 0 1% 0%;
+      }
+    }
+  
+    /*  GRID OF TWO   ============================================================================= */
+  
+    .cform-span_2_of_2 {
+      width: 100%;
+    }
+  
+    .cform-span_1_of_2 {
+      width: 49.2%;
+    }
+  
+    .cform-input span{
+      font-size:12px;
+      font-weight:normal;
+      margin-top:-2px;
+    }
+  
+    /*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
+  
+    @media only screen and (max-width: 480px) {
+      .cform-span_2_of_2 {
+        width: 100%;
+      }
+      .cform-span_1_of_2 {
+        width: 100%;
+      }
+    }
+  
+    /*  GRID OF THREE   ============================================================================= */
+  
+    .cform-span_3_of_3 {
+      width: 100%;
+    }
+  
+    .cform-span_2_of_3 {
+      width: 66.13%;
+    }
+  
+    .cform-span_1_of_3 {
+      width: 32.26%;
+    }
+  
+    /*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
+  
+    @media only screen and (max-width: 480px) {
+      .cform-span_3_of_3 {
+        width: 100%;
+      }
+      .cform-span_2_of_3 {
+        width: 100%;
+      }
+      .cform-span_1_of_3 {
+        width: 100%;
+      }
+    }
+  
+    /*  GRID OF FOUR   ============================================================================= */
+  
+    .cform-span_4_of_4 {
+      width: 100%;
+    }
+  
+    .cform-span_3_of_4 {
+      width: 74.6%;
+    }
+  
+    .cform-span_2_of_4 {
+      width: 49.2%;
+    }
+  
+    .cform-span_1_of_4 {
+      width: 23.8%;
+    }
+  
+    /*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
+  
+    @media only screen and (max-width: 480px) {
+      .cform-span_4_of_4 {
+        width: 100%;
+      }
+      .cform-span_3_of_4 {
+        width: 100%;
+      }
+      .cform-span_2_of_4 {
+        width: 100%;
+      }
+      .cform-span_1_of_4 {
+        width: 100%;
+      }
+    }
+  
+    /*  GRID OF FIVE   ============================================================================= */
+  
+    .cform-span_5_of_5 {
+      width: 100%;
+    }
+  
+    .cform-span_4_of_5 {
+      width: 79.68%;
+    }
+  
+    .cform-span_3_of_5 {
+      width: 59.36%;
+    }
+  
+    .cform-span_2_of_5 {
+      width: 39.04%;
+    }
+  
+    .cform-span_1_of_5 {
+      width: 18.72%;
+    }
+  
+    /*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
+  
+    @media only screen and (max-width: 480px) {
+      .cform-span_5_of_5 {
+        width: 100%;
+      }
+      .cform-span_4_of_5 {
+        width: 100%;
+      }
+      .cform-span_3_of_5 {
+        width: 100%;
+      }
+      .cform-span_2_of_5 {
+        width: 100%;
+      }
+      .cform-span_1_of_5 {
+        width: 100%;
+      }
+    }
+  
+    @media only print {
+        #cform-wrap {
+  
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1em 0px;
+        font-family: arial;
+      }
+    }
+  </style>
+</head>
+
+<body>
+    <div id="cform" style="width: 100%;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-size: 8pt;
+    line-height: normal;
+    font-family: Helvetica, Arial, sans-serif;">
+        <div class="cform-page hidePad" style="overflow-x: hidden;">
+          <style>
+          
+          /* #cform input[type=checkbox] {
+    display: inline-block;
+    height: 1.4167em;
+    vertical-align: bottom;
+    margin: 0em;
+}
+          #cform .inputContainerTable td.inputContainLabel {
+    font-size: 1em;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+          #cform .inputContainerTable tr.upperRow {
+    line-height: 1.4167em;
+    min-height: 1.4167em;
+    height: 1.4167em;
+    max-height: 1.4167em;
+}
+          #cform .logo {
+            max-width: 300px;
+          }
+
+          @media (max-width: 767px) {
+            #cform .logo {
+            max-width: 50%;
+          }
+          } */
+          
+          </style>    
+            <!-- HEADER -->
+            <div class="cform-section" style="padding-bottom: 15px;">
+                <div class="cform-group w100 m100 bold center f7">
+                     Pricing Guide
+                </div>
+            </div>
+    
+            <!-- PEST CONTROL CO INFO AND PROJECT/TREATMENT DESCRIPTION -->
+            <div class="cform-section ba mba" style="line-height: 1.5;">
+                <div class="cform-group w40 m100 f4-5" style="padding: 0;">
+                    <!-- <div class="cform-group w45 m100 bold br bb mbb" style="min-height: 40px; line-height: 40px; padding-left: 10px; font-weight: bold; font-size: 1.2em;">
+                        Company Logo
+                    </div> -->
+                    <div class="cform-group w55 m100 br bb mbb" style="margin: 10px 0; padding-left: 10px;">
+                      <img src="{{logo}}" class="logo" style="cursor: pointer; min-height: 50px; min-width: 50px; border: 1px solid #e1e1e1; vertical-align: middle; max-width: 150px;">
+                    </div>
+                    <!-- <div class="cform-group w45 m100 bold br bb mbb" style="min-height: 40px; line-height: 40px; padding-left: 10px; font-weight: bold; font-size: 1.2em;">
+                        Customer Name, Address, Phone And Email
+                    </div> -->
+                    <div class="cform-group w55 m100 br bb mbb" style="min-height: 20px;">
+                        <input class="w100" value="{{customerName}}" />
+                        <input class="w100" value="{{customerAddress}}" />
+                        <input class="w100" value="{{customerPhone}}, {{customerPhone2}}" />
+                        <input class="w100" value="{{customerEmail}}" />
+                    <div style="clear: both;"></div>
+                    <div class="cform-group w70 m100 br mbb" style="margin: 10px 0;">
+                      <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                          <table class="inputContainerTable">
+                              <tbody>
+                                <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                  <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                  </td>
+                                  <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Pest Prevention</td>
+                                  <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Initial Service Fee" style="font-size: 0.9167em;"></td>
+                                  <td><div>-</div></td>
+                                  <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Monthly Charge" style="font-size: 0.9167em;"></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                      </div>
+                      <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Mosquito Abatement</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Initial Fee" style="font-size: 0.9167em;"></td>
+                                <td><div>-</div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Monthly Charge" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Subterranean Termite Protection</td>
+                                <td class="inputContain bold" style="border-bottom: 0.0833em solid black;
+                                  width: 100%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Linear Foot Measurement" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 15px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Sentricon Baiting System</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Initial Fee" style="font-size: 0.9167em;"></td>
+                                <td><div>-</div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Monthly Charge" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 15px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Conventional Termite Treatment</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Initial" style="font-size: 0.9167em;"></td>
+                                <td><div>-</div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Monthly Charge" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Averzion Scorpion Barrier</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline input-unit" data-val="5" type="number" placeholder="Linear Foot" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> * $5 = </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline input-total" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Rodent Bait Stations</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline input-unit" type="number" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> * $30 = </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Weep Holes</td>
+                                <td class="inputContain bold" style="border-bottom: 0.0833em solid black;
+                                  width: 100%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Roof Returns</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> * $125 = </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Gable Vents/Soffit Vents</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> - </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Roof Vent Guards</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> - </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Roof Exhuast Pipes</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> - </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Dryer Vent Guards</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> * $95 = </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Garage Door Sweeps</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 15px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">8 Foot Door</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> * $300 = </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 15px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">16 Foot Door</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> * $450 = </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Traditional Door Sweeps</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> * $100 = </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Garage Door Plates</td>
+                                <td class="inputContain inputContain1 inputContain1 bold"><input class="inputUline" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> * $85 = </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Foundation Wrap</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Linear Foot" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> * $10 = </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Rodent Trapping (2 weeks)</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> * $300 = </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Live Wildlife Trapping (1 week)</td>
+                                <td class="inputContain inputContain1 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Unit" style="font-size: 0.9167em;"></td>
+                                <td style="white-space: nowrap;"><div> * $300 = </div></td>
+                                <td class="inputContain inputContain2 bold" style="border-bottom: 0.0833em solid black;
+                                  width: 48%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                    <div style="clear: both;"></div>
+                      <div class="cform-group w100 m100" style="font-size: .9em; padding-left: 2px;">
+                        <table class="inputContainerTable">
+                            <tbody>
+                              <tr class="upperRow" style="line-height: 1.4167em;
+                                min-height: 1.4167em;
+                                height: 1.4167em;
+                                max-height: 1.4167em;">
+                                <td class="inputContainLabel no-bold" style="padding-right: 5px;"><input type="checkbox">
+                                </td>
+                                <td class="inputContainLabel no-bold" style="font-size: 1em;
+                                  vertical-align: middle;
+                                  white-space: nowrap;">Miscelaneous Fee</td>
+                                <td class="inputContain bold" style="border-bottom: 0.0833em solid black;
+                                  width: 100%;
+                                  font-size: 1em;
+                                  min-height: 1.5em;
+                                  height: 1.5em;
+                                  max-height: 1.5em;"><input class="inputUline" placeholder="Total" style="font-size: 0.9167em;"></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </div>
+                </div>      
+    
+                  
+      </div></div>
+      <script>
+        var fields = document.querySelectorAll('.input-unit');
+
+        fields.forEach(field => {
+          field.addEventListener('change', function(e) {
+            var val = parseFloat(e.currentTarget.value),
+                times = parseInt(e.currentTarget.attributes['data-val'].value),
+                totalwrap = e.currentTarget.closest('.upperRow').querySelector('.input-total'),
+                totalval = val ? parseInt(val * times) : '';
+
+                totalwrap.value = totalval;
+            
+          })
+        });
+      </script></div>
+      
+</body>
+</html>
+

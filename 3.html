@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML to PDF</title>
+</head>
+
+<body>
+  <h1>Convert HTML to PDF</h1>
+  <p>This is a sample paragraph that will be included in the PDF.</p>
+  <button id="downloadPdf">Download PDF</button>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script>
+    document.getElementById('downloadPdf').addEventListener('click', function() {
+        window.jsPDF = window.jspdf.jsPDF;
+      var pdf = new jsPDF();
+      console.log(pdf);
+      pdf.html(document.body, {
+        callback: function() {
+        pdf.save('downloaded-pdf.pdf');
+      }
+      });
+    });
+</script>
+</html>
